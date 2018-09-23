@@ -48,6 +48,7 @@ def spider(_lock, _begin, _end):
             except StopIteration as e:
                 break
             except Exception as e:
+                logger.error("ERROR: %s | Begin: %d | End: %d" % (str(e), _begin, _end))
                 continue
 
         # 存储
