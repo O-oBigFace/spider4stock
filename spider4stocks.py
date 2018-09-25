@@ -5,6 +5,7 @@ import json
 import numpy as np
 import pprint
 import sys
+import random
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -14,9 +15,23 @@ _QUOTE = "/quote.aspx?symbol={0}"
 
 _QUOTE_YAHOO = "https://finance.yahoo.com/quote/{0}?p={0}"
 
+_AGENTS = [
+    "Googlebot/2.1 (+http://www.google.com/bot.html)",
+    "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 8_3 like Mac OS X) AppleWebKit/537.36 (KHTML, like Gecko) Version/8.0 Mobile/12F70 Safari/600.1.4 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 8_3 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12F70 Safari/600.1.4 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+    "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+    "Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.96 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+    "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36",
+    "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; Google Web Preview Analytics) Chrome/27.0.1453 Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/41.0.2272.76 Chrome/41.0.2272.76 Safari/537.36",
+
+
+]
 
 _HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/41.0.2272.76 Chrome/41.0.2272.76 Safari/537.36',
+    'User-Agent': random.choice(_AGENTS),
     }
 
 # proxies
@@ -37,6 +52,7 @@ def _get_page(pagerequest):
         headers=_HEADERS,
         proxies=_PROXIES,
         verify=False,
+        timeout=random.choice(range(30, 100))
     )
     resp.encoding = "utf-8"
     if resp.status_code == 200:
@@ -133,14 +149,15 @@ def search_stock(name):
 
 
 if __name__ == '__main__':
-    # company = sys.argv[1]
-    company = "apple"
+    company = sys.argv[1]
+    # company = "apple"
     stock = None
     MC = "N/A"
     _generator = search_stock(company)
     while MC == "N/A":
         try:
             stock = next(_generator).fill()
+            print(stock)
             MC = stock.Market_Cap
         except StopIteration as e:
             print(e)
