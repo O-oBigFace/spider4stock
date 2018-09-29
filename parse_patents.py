@@ -3,6 +3,7 @@ import json
 import pprint
 import pymysql
 import warnings
+import numpy as np
 warnings.filterwarnings("ignore")
 
 path_dir = os.path.join(os.getcwd(), "data")

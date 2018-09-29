@@ -26,8 +26,6 @@ _AGENTS = [
     "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Safari/537.36",
     "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; Google Web Preview Analytics) Chrome/27.0.1453 Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/41.0.2272.76 Chrome/41.0.2272.76 Safari/537.36",
-
-
 ]
 
 _HEADERS = {
@@ -35,11 +33,19 @@ _HEADERS = {
     }
 
 # proxies
-_PROXY_HOST = "proxy.crawlera.com"
-_PROXY_POST = "8010"
-_PROXY_AUTH = "020f566483124ffabffb045089a73b11:"
+proxyHost = "http-dyn.abuyun.com"
+proxyPort = "9020"
+proxyUser = "H5JJ8231M78WW99D"
+proxyPass = "C9E7BCAEFC8D2098"
+proxyMeta = "http://%(user)s:%(pass)s@%(host)s:%(port)s" % {
+    "host": proxyHost,
+    "port": proxyPort,
+    "user": proxyUser,
+    "pass": proxyPass,
+}
 _PROXIES = {
-    "https": "https://{0}@{1}:{2}/".format(_PROXY_AUTH, _PROXY_HOST, _PROXY_POST),
+    "http": proxyMeta,
+    "https": proxyMeta,
 }
 
 # requests
